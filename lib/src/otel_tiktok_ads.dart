@@ -1,15 +1,16 @@
-// Licensed under the Dartastic Pro Software License Agreement.
+// Licensed under the Apache License, Version 2.0
 // Copyright 2025-2026 Mindful Software LLC d/b/a Dartastic.io, All rights reserved.
 
-import 'package:dartastic_opentelemetry/dartastic_opentelemetry.dart';
+import 'package:dartastic_opentelemetry_api/dartastic_opentelemetry_api.dart';
 
 import 'otel_tiktok_ads_suppression.dart';
 
 const _tracerName = 'dartastic_otel_libs_tiktok_ads';
 
-Tracer _tracer() => OTel.tracerProvider().getTracer(_tracerName);
+APITracer _tracer() => OTelAPI.tracerProvider().getTracer(_tracerName);
 
 class TiktokAdsResult {
+  /// Creates a result.
   const TiktokAdsResult({
     this.advertiserId,
     this.bcId,
@@ -77,8 +78,13 @@ class TiktokAdsResult {
   final int? statusCode;
 }
 
+/// What a traced call returned: the value for the caller plus fields
+/// recorded on the span.
 class TiktokAdsCallResult<T> {
+  /// Creates a call result.
   const TiktokAdsCallResult({required this.value, this.result});
+
+  /// The value returned to the caller.
   final T value;
   final TiktokAdsResult? result;
 }
@@ -103,125 +109,126 @@ Future<T> tracedTiktokAds<T>({
   final span = _tracer().startSpan(
     'tiktok_ads $operation',
     kind: SpanKind.client,
-    attributes: OTel.attributesFromMap(m),
+    attributes: OTelAPI.attributesFromMap(m),
   );
   try {
     final r = await invoke();
     if (r.result != null) {
       final extras = <Attribute<Object>>[];
       if (r.result!.advertiserId != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'tiktok_ads.advertiser.id',
           r.result!.advertiserId!,
         ));
       }
       if (r.result!.bcId != null) {
-        extras.add(OTel.attributeString('tiktok_ads.bc.id', r.result!.bcId!));
+        extras
+            .add(OTelAPI.attributeString('tiktok_ads.bc.id', r.result!.bcId!));
       }
       if (r.result!.campaignId != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'tiktok_ads.campaign.id',
           r.result!.campaignId!,
         ));
       }
       if (r.result!.adGroupId != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'tiktok_ads.ad_group.id',
           r.result!.adGroupId!,
         ));
       }
       if (r.result!.adId != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'tiktok_ads.ad.id',
           r.result!.adId!,
         ));
       }
       if (r.result!.objectiveType != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'tiktok_ads.objective.type',
           r.result!.objectiveType!,
         ));
       }
       if (r.result!.optimizationGoal != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'tiktok_ads.optimization.goal',
           r.result!.optimizationGoal!,
         ));
       }
       if (r.result!.billingEvent != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'tiktok_ads.billing.event',
           r.result!.billingEvent!,
         ));
       }
       if (r.result!.placementType != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'tiktok_ads.placement.type',
           r.result!.placementType!,
         ));
       }
       if (r.result!.operationStatus != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'tiktok_ads.operation.status',
           r.result!.operationStatus!,
         ));
       }
       if (r.result!.sparkAds != null) {
-        extras.add(OTel.attributeBool(
+        extras.add(OTelAPI.attributeBool(
           'tiktok_ads.spark_ads',
           r.result!.sparkAds!,
         ));
       }
       if (r.result!.spendMinor != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'tiktok_ads.spend.minor',
           r.result!.spendMinor!,
         ));
       }
       if (r.result!.currencyCode != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'tiktok_ads.currency.code',
           r.result!.currencyCode!,
         ));
       }
       if (r.result!.impressions != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'tiktok_ads.impressions',
           r.result!.impressions!,
         ));
       }
       if (r.result!.reach != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'tiktok_ads.reach',
           r.result!.reach!,
         ));
       }
       if (r.result!.videoPlay25Pct != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'tiktok_ads.video_play_25pct',
           r.result!.videoPlay25Pct!,
         ));
       }
       if (r.result!.videoPlay100Pct != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'tiktok_ads.video_play_100pct',
           r.result!.videoPlay100Pct!,
         ));
       }
       if (r.result!.clicks != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'tiktok_ads.clicks',
           r.result!.clicks!,
         ));
       }
       if (r.result!.conversions != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'tiktok_ads.conversions',
           r.result!.conversions!,
         ));
       }
       if (r.result!.statusCode != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'http.response.status_code',
           r.result!.statusCode!,
         ));
@@ -232,13 +239,13 @@ Future<T> tracedTiktokAds<T>({
           );
         }
       }
-      if (extras.isNotEmpty) span.addAttributes(OTel.attributes(extras));
+      if (extras.isNotEmpty) span.addAttributes(OTelAPI.attributes(extras));
     }
     return r.value;
   } catch (e, st) {
-    span.addAttributes(OTel.attributes([
-      OTel.attributeString(
-        ErrorResource.errorType.key,
+    span.addAttributes(OTelAPI.attributes([
+      OTelAPI.attributeString(
+        ErrorAttributes.errorType.key,
         e.runtimeType.toString(),
       ),
     ]));
